@@ -3,7 +3,7 @@
 author
 :   Shugo Maeda
 
-# Self introduction
+# 自己紹介
 
 * 前田修吾
 * Textbringerの作者
