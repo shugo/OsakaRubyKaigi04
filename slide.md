@@ -3,8 +3,8 @@
 ## 自己紹介
 
 * 前田修吾
+* 株式会社ネットワーク応用通信研究所代表取締役社長
 * Textbringerの作者
-* ネットワーク応用通信研究所代表取締役社長
 * 関西学生フォークソング連盟のコンサート以来の中之島
 
 ## [PR] 松江Ruby会議11
@@ -89,19 +89,25 @@ p s.scan(/\w+/)      # ["Hello", "world"]
 
 * offsetで指定した位置からマッチを行い、マッチした位置を返す
 * StringScannerと違い、offsetより後の位置でもマッチする
+    * `"foo bar".index(/bar/, 2) #=> 4`
 
 ## \A
 
 * 正規表現のアンカーの一種
-    * アンカーはマッチする位置を指定し、幅をもたない(=長さ0の文字列にマッチ)
+    * アンカーはマッチする位置を指定する
+        * 幅をもたない(=長さ0の文字列にマッチ)
 * 対象文字列の先頭にのみマッチする
-* String#indexやRegexp#matchの第2引数で開始位置を指定した場合も、開始位置が対象文字列の先頭でない場合はマッチしない
+* String#indexやRegexp#matchの第2引数で開始位置を指定した場合も、
+  開始位置が対象文字列の先頭でない場合はマッチしない
+    * `"foo bar".index(/\Abar/, 4) #=> nil`
 
 ## \G
 
 * 正規表現のアンカーの一種
 * scanやgsubのときに前回のマッチの直後の位置にマッチする
-* String#indexやRegexp#matchの第2引数で開始位置を指定した場合、開始位置にマッチする
+* String#indexやRegexp#matchの第2引数で開始位置を指定した場合、
+  開始位置にマッチする
+    * `"foo bar".index(/\Gbar/, 4) #=> 4`
 
 ## net-imapの例
 
@@ -140,17 +146,19 @@ p s.scan(/\w+/)      # ["Hello", "world"]
 ## UTF-8の例
 
 ```
-0        1        2        3        4  5  6  7
+0        1        2        3        4  5  6  7   # 文字単位
 た       の       し       い       R  u  b  y
 E3 81 9F E3 81 AE E3 81 97 E3 81 84 52 75 62 79
-0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15  # バイト単位
 ```
 
 ## なぜ普段困らないのか
 
-* たいていは文字列を頭からお尻までなめる
+* たいていは文字列を先頭から末尾まで処理する
     * gsubとかscanとか
-* ランダムアクセスする場合や、StringScannerのように一気になめない場合に困る
+* 困るケース
+    * ランダムアクセスする場合
+    * StringScannerのように一気になめない場合
 
 ## String#byteindex(regexp, offset)
 
@@ -158,18 +166,56 @@ E3 81 9F E3 81 AE E3 81 97 E3 81 84 52 75 62 79
 
 ## ベンチマーク
 
+```ruby
+require "benchmark"
+
+S = "あ" * 10240
+
+Benchmark.bmbm do |b|
+  b.report("index") do
+    pos = 0
+    while S.index(/\Gあ/, pos)
+      pos = $~.offset(0).last
+    end
+  end
+
+  b.report("byteindex") do
+    pos = 0
+    while S.byteindex(/\Gあ/, pos)
+      pos = $~.byteoffset(0).last
+    end
+  end
+end
+```
+
 ## [Feature #20576] Add MatchData#bytebegin and MatchData#byteend
 
 * MatchData#begin/MatchData#endのバイトオフセット版
-* MatchData#byteoffsetでも同じ情報が取れるが無駄な配列が生成されてしまう
+* 既存のMatchData#byteoffsetでも同じ情報が取れる
+    * ただし、無駄な配列が生成されてしまう
+        * `$~.byteoffset(0) #=> [4, 7]`
+
+## ベンチマーク結果
+
+```
+Rehearsal ---------------------------------------------
+index       0.812831   0.000000   0.812831 (  0.812899)
+byteindex   0.003623   0.000000   0.003623 (  0.003623)
+------------------------------------ total: 0.816454sec
+
+                user     system      total        real
+index       0.815832   0.000000   0.815832 (  0.815845)
+byteindex   0.002050   0.000000   0.002050 (  0.002050)
+```
 
 ## net-imapの修正
 
-https://github.com/ruby/net-imap/pull/286
+* https://github.com/ruby/net-imap/pull/286
 
 ## 速くなっていない?
 
-* 入力がASCII-8BITだからString#indexでもO(n)
+* Socketから読んだ文字列はASCII-8BIT
+* ASCII-8BITだとString#indexでもO(n)
 
 ## まとめ
 
