@@ -188,25 +188,21 @@ Benchmark.bmbm do |b|
 end
 ```
 
+## ベンチマーク結果
+
+```
+                user     system      total        real
+index       0.815832   0.000000   0.815832 (  0.815845)
+byteindex   0.002050   0.000000   0.002050 (  0.002050)
+```
+
 ## [Feature #20576] Add MatchData#bytebegin and MatchData#byteend
 
 * MatchData#begin/MatchData#endのバイトオフセット版
 * 既存のMatchData#byteoffsetでも同じ情報が取れる
     * ただし、無駄な配列が生成されてしまう
         * `$~.byteoffset(0) #=> [4, 7]`
-
-## ベンチマーク結果
-
-```
-Rehearsal ---------------------------------------------
-index       0.812831   0.000000   0.812831 (  0.812899)
-byteindex   0.003623   0.000000   0.003623 (  0.003623)
------------------------------------- total: 0.816454sec
-
-                user     system      total        real
-index       0.815832   0.000000   0.815832 (  0.815845)
-byteindex   0.002050   0.000000   0.002050 (  0.002050)
-```
+* 大阪Ruby会議04をきっかけに提案してRuby 3.4で導入予定
 
 ## net-imapの修正
 
