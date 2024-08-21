@@ -62,6 +62,10 @@ p s.scan(/\w+/)      # -> "world"
 > What should I do if I update my own dependencies without changing the public API?
 > That would be considered compatible since it does not affect the public API.
 
+## そもそもSemVerってうれしい?
+
+* むしろ `~>` が指定されたgemが放置されてて困ること多くない?
+
 ## All bugfixes are incompatibilities
 
 ![All bugfixes are incompatibilities](all_bugfixes_are_incompatibilities.png)
