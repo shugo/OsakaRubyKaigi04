@@ -84,11 +84,15 @@ p s.scan(/\w+/)      # -> "world"
 * 常に最新のバージョンを使え
 * すべての変更には意味がある
 
+## 閑話休題
+
+* strscanなしで文字列をスキャンする方法
+
 ## String#scan
 
 ```
 s = "Hello world"
-p s.scan(/\w+/)      # ["Hello", "world"]
+p s.scan(/\w+|\s+/)      # ["Hello", " ", "world"]
 ```
 
 ## String#scanの不便なところ
@@ -228,20 +232,9 @@ byteindex   0.002050   0.000000   0.002050 (  0.002050)
 ## ベンチマーク
 
 ```
-$ ruby -I ~/src/net-imap/lib b2.rb   # master
-Rehearsal -----------------------------------------
-parse   0.661723   0.003435   0.665158 (  0.665231)
--------------------------------- total: 0.665158sec
-
-            user     system      total        real
-parse   0.658998   0.000000   0.658998 (  0.659019)
-$ ruby -I ~/src/net-imap/lib b2.rb   # use_byteindex
-Rehearsal -----------------------------------------
-parse   0.641354   0.000000   0.641354 (  0.641432)
--------------------------------- total: 0.641354sec
-
-            user     system      total        real
-parse   0.662438   0.000000   0.662438 (  0.664375)
+                user     system      total        real
+index       0.658998   0.000000   0.658998 (  0.659019)
+byteindex   0.662438   0.000000   0.662438 (  0.664375)
 ```
 
 ## まとめ
