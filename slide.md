@@ -13,6 +13,10 @@
 * 場所: 松江オープンソースラボ
 * 基調講演: 卜部昌平さん(松江市立母衣小学校卒)
 
+## 本日のテーマ
+
+* strscanなしで文字列をスキャンする
+
 ## strscan
 
 * StringScannerクラスを提供
@@ -59,8 +63,12 @@ p s.scan(/\w+/)      # -> "world"
 
 ## SemVerは関係ない
 
-> What should I do if I update my own dependencies without changing the public API?
-> That would be considered compatible since it does not affect the public API.
+* https://semver.org/#what-should-i-do-if-i-update-my-own-dependencies-without-changing-the-public-api
+
+> What should I do if I update my own dependencies without changing
+> the public API?
+> That would be considered compatible since it does not affect
+> the public API.
 
 ## そもそもSemVerってうれしい?
 
@@ -87,7 +95,7 @@ p s.scan(/\w+/)      # ["Hello", "world"]
 
 * 最後までまとめてスキャンしてしまう
 * 一つの正規表現しか使えない
-* パーサーの状態によって字句解析の仕方を変えたい
+* パーサーの状態によって字句解析の仕方を変えたいですよね?
 
 ## String#index(regexp, offset = 0)
 
@@ -162,7 +170,7 @@ E3 81 9F E3 81 AE E3 81 97 E3 81 84 52 75 62 79
     * gsubとかscanとか
 * 困るケース
     * ランダムアクセスする場合
-    * StringScannerのように一気になめない場合
+    * 先頭からのスキャンでも一気になめない場合
 
 ## String#byteindex(regexp, offset)
 
