@@ -9,6 +9,11 @@
 * Textbringerの作者
 * 関西学生フォークソング連盟のコンサート以来の中之島
 
+## [PR] Textbringer
+
+* Rubyで書かれたテキストエディタ(というかEmacs)
+* dRubyを使っている
+
 ## [PR] 松江Ruby会議11
 
 * 日時: 2024年10月5日(土) 12:30〜
@@ -75,6 +80,7 @@ p s.scan(/\w+/)      # -> "world"
 ## そもそもSemVerってうれしい?
 
 * むしろ `~>` が指定されたgemが放置されてて困ること多くない?
+* PATCHしか変わってなかったら互換性の問題はないと思った?
 
 ## All bugfixes are incompatibilities
 
