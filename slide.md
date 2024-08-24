@@ -3,8 +3,9 @@
 ## 自己紹介
 
 * 前田修吾
-* 株式会社ネットワーク応用通信研究所代表取締役社長
 * 島根県松江市在住
+* 株式会社ネットワーク応用通信研究所代表取締役社長
+* Rubyコミッタ
 * Textbringerの作者
 * 関西学生フォークソング連盟のコンサート以来の中之島
 
@@ -172,7 +173,8 @@ E3 81 9F E3 81 AE E3 81 97 E3 81 84 52 75 62 79
 ## なぜ普段困らないのか
 
 * たいていは文字列を先頭から末尾まで処理する
-    * gsubとかscanとか
+    * gsubとかscanとかeach_charとか
+    * インデックスアクセスは必要ない
 * 困るケース
     * ランダムアクセスする場合
     * 先頭からのスキャンでも一気になめない場合
@@ -215,22 +217,26 @@ byteindex   0.002050   0.000000   0.002050 (  0.002050)
 
 ## [Feature #20576] Add MatchData#bytebegin and MatchData#byteend
 
+* より効率をよくするための提案
 * MatchData#begin/MatchData#endのバイトオフセット版
 * 既存のMatchData#byteoffsetでも同じ情報が取れる
     * ただし、無駄な配列が生成されてしまう
         * `$~.byteoffset(0) #=> [4, 7]`
+* ぶっちゃけ気分の問題
 * 大阪Ruby会議04をきっかけに提案してRuby 3.4で導入予定
 
 ## net-imapの修正
 
 * https://github.com/ruby/net-imap/pull/286
+    * String#byteindexを使うよう修正
 
-## 速くなっていない?
+## 速くなっていない!?
 
 * Socketから読んだ文字列はASCII-8BIT
 * ASCII-8BITだとString#indexでもO(n)
+* 昔の自分はきっとわかって使っていた
 
-## ベンチマーク
+## 一応ベンチマーク
 
 ```
                 user     system      total        real
